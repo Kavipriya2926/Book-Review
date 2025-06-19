@@ -1,13 +1,37 @@
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import API from "../api/axios";
 
-export default function ReviewForm({ onSubmit }) {
-  const { register, handleSubmit, reset } = useForm();
+export default function ReviewForm({ bookId, onReviewAdded }) {
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await API.post("/reviews", { bookId, comment, rating });
+      setRating(5);
+      setComment("");
+      alert("Review submitted!");
+      onReviewAdded(); // refresh reviews list
+    } catch (err) {
+      alert(err.response?.data?.message || "Review submission failed");
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit((data) => { onSubmit(data); reset(); })} className="space-y-4">
-      <textarea {...register("comment")} className="w-full p-2 border rounded" placeholder="Write your review" required />
-      <input type="number" {...register("rating")} min="1" max="5" className="w-full p-2 border rounded" placeholder="Rating (1-5)" required />
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Submit Review</button>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 mt-6">
+      <textarea
+        className="border p-2"
+        placeholder="Your comment"
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+      />
+      <select className="border p-2 w-24" value={rating} onChange={(e) => setRating(Number(e.target.value))}>
+        {[5, 4, 3, 2, 1].map((val) => (
+          <option key={val} value={val}>{val} Stars</option>
+        ))}
+      </select>
+      <button type="submit" className="bg-blue-600 text-white p-2 rounded w-fit">Submit Review</button>
     </form>
   );
 }
