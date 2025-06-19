@@ -14,8 +14,27 @@ export const getBookById = async (req, res) => {
 };
 
 // @route POST /api/books (admin only)
+// @route POST /api/books (admin only or logged-in users)
 export const addBook = async (req, res) => {
-  const { title, author, description, genre } = req.body;
-  const book = await Book.create({ title, author, description, genre });
-  res.status(201).json(book);
+  try {
+    const { title, author, description, genre } = req.body;
+
+    // Ensure user is authenticated
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    const book = await Book.create({
+      title,
+      author,
+      description,
+      genre,
+      createdBy: req.user.id, // ✅ Track who created the book
+    });
+
+    res.status(201).json(book);
+  } catch (err) {
+    console.error("Error adding book:", err);
+    res.status(500).json({ message: "Failed to add book" });
+  }
 };

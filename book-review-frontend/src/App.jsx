@@ -6,6 +6,7 @@ import BookDetails from "./pages/BookDetails";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import AddBook from "./pages/AddBook";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/register" element={<Register />} />
         <Route path="/add-book" element={<AddBook />} />
+        <Route path="/login" element={<Login />} />
+
       </Routes>
     </BrowserRouter>
   );

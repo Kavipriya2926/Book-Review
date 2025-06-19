@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Book from "../models/Book.js";
+import Review from "../models/Review.js";
 
 // Generate JWT
 const generateToken = (userId) => {
@@ -36,6 +38,25 @@ export const loginUser = async (req, res) => {
 
 // @route GET /api/users/me
 export const getProfile = async (req, res) => {
-  const user = await User.findById(req.user.id).select("-password");
-  res.json(user);
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const postedBooks = await Book.find({ createdBy: user._id }).select("title _id");
+
+    const reviewedBooks = await Review.find({ user: user._id })
+      .populate("book", "title _id")
+      .select("comment rating book");
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      postedBooks,
+      reviewedBooks,
+    });
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
