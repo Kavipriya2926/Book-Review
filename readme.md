@@ -1,10 +1,4 @@
-Here’s a clean, developer-friendly `README.md` for your **Book Review Platform** full-stack project using React + Node.js + MongoDB:
 
----
-
-### ✅ `README.md`
-
-```markdown
 # 📚 Book Review Platform
 
 A full-stack web application for browsing books, submitting reviews, and managing user profiles.
