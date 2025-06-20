@@ -58,7 +58,7 @@ A full-stack web application for browsing books, submitting reviews, and managin
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/book-review-platform.git
+git clone https://github.com/Kavipriya2926/Book-Review
 cd book-review-platform
 ````
 
@@ -77,8 +77,8 @@ Create a `.env` file in `/book-review-backend`:
 
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
+MONGO_URI=mongodb+srv://kavipriya:kavii@book.q0rvnys.mongodb.net/
+JWT_SECRET=test
 ```
 
 #### ▶️ Run Backend:
